@@ -65,9 +65,14 @@ class SmartrentThermostat(ClimateEntity):
         return False
 
     @property
+    def available(self) -> bool:
+        """Cloud connection is up and the device reports online."""
+        return self.device.get_reachable() and self.device.get_online() is not False
+
+    @property
     def unique_id(self):
         """Return a unique ID."""
-        return self.device._device_id
+        return str(self.device._device_id)
 
     @property
     def name(self):

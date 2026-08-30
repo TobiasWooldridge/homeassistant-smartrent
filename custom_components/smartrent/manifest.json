@@ -6,11 +6,11 @@
   ],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://github.com/ZacheryThomas/homeassistant-smartrent",
+  "documentation": "https://github.com/TobiasWooldridge/homeassistant-smartrent",
   "iot_class": "cloud_push",
-  "issue_tracker": "https://github.com/ZacheryThomas/homeassistant-smartrent/issues",
+  "issue_tracker": "https://github.com/TobiasWooldridge/homeassistant-smartrent/issues",
   "requirements": [
-    "smartrent-py==0.5.2"
+    "smartrent-py @ https://github.com/TobiasWooldridge/smartrent-py/archive/refs/tags/v0.6.0.tar.gz"
   ],
-  "version": "0.5.5"
+  "version": "0.6.0"
 }

@@ -62,7 +62,8 @@ class SmartrentSensor(SensorEntity):
 
     @property
     def available(self) -> bool:
-        return self.device.get_online()
+        """Cloud connection is up and the device reports online."""
+        return self.device.get_reachable() and self.device.get_online() is not False
 
     @property
     def should_poll(self):

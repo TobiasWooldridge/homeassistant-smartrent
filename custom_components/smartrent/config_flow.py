@@ -55,14 +55,18 @@ class SmartRentFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):  # type: i
         """Import a config entry from configuration.yaml."""
         return await self.async_step_user(import_config)
 
-    async def async_step_reauth(self, user_input=None):
-        """Handle the initial step."""
+    async def async_step_reauth(self, entry_data=None):
+        """Start reauth: show the form instead of re-validating the old creds."""
+        return await self.async_step_reauth_confirm()
+
+    async def async_step_reauth_confirm(self, user_input=None):
+        """Collect and validate fresh credentials."""
         if not user_input:
             _LOGGER.info("no user input. showing reauth form")
-            return await self._show_form(step_id="reauth")
+            return await self._show_form(step_id="reauth_confirm")
 
         if errors := await self._check_creds_input(user_input):
-            return await self._show_form(step_id="reauth", errors=errors)
+            return await self._show_form(step_id="reauth_confirm", errors=errors)
 
         if entry := await self.async_set_unique_id(self.unique_id):
             self.hass.config_entries.async_update_entry(entry, data=user_input)

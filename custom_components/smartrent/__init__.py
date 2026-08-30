@@ -11,6 +11,7 @@ from aiohttp.client_exceptions import ClientConnectorError
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from smartrent import async_login
 from smartrent.api import API
@@ -38,6 +39,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     password = entry.data.get(CONF_PASSWORD)
     tfa_token = entry.data.get(CONF_TOKEN)
 
+    # Migrate legacy integer unique_ids to strings
+    def _migrate_unique_id(entity_entry):
+        if not isinstance(entity_entry.unique_id, str):
+            return {"new_unique_id": str(entity_entry.unique_id)}
+        return None
+
+    await er.async_migrate_entries(hass, entry.entry_id, _migrate_unique_id)
+
     session = async_get_clientsession(hass)
     try:
         api = await async_login(username, password, session, tfa_token=tfa_token)
@@ -52,7 +61,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
-    entry.add_update_listener(async_reload_entry)
+    entry.async_on_unload(entry.add_update_listener(async_reload_entry))
     return True
 
 

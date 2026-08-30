@@ -10,7 +10,7 @@
           "token": "2fa Code (optional)"
         }
       },
-      "reauth": {
+      "reauth_confirm": {
         "title": "Configure SmartRent",
         "description": "Enter your SmartRent credentials",
         "data": {
