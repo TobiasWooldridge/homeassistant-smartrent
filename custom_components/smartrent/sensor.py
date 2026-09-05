@@ -172,6 +172,7 @@ class SmartrentCommandLatencySensor(SensorEntity):
             "attribute": result.attribute,
             "value": result.value,
             "started": result.started.isoformat(),
+            "verified": result.verified,
             "error": result.error,
         }
 
