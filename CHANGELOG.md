@@ -1,5 +1,8 @@
 # Changelog (thw fork)
 
+## 0.7.1 - 2026-09-05
+- Requires smartrent-py 0.7.1 (5/10/17 s re-send schedule, 25 s deadline).
+
 ## 0.7.0 - 2026-09-05
 - Requires smartrent-py 0.7.0 (hub-confirmed commands).
 - Lock reports `locking` / `unlocking` while the hub works and raises a
