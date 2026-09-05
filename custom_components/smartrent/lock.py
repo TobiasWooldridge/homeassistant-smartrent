@@ -3,8 +3,10 @@ import logging
 from typing import Any, Union
 
 from homeassistant.components.lock import LockEntity
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.device_registry import DeviceEntryType
 from smartrent import DoorLock
+from smartrent.utils import CommandFailedError
 
 from .const import CONFIGURATION_URL, PROPER_NAME
 
@@ -59,11 +61,33 @@ class SmartrentLock(LockEntity):
     def is_jammed(self) -> Union[bool, None]:
         return "ALARM_TYPE_9" in str(self.device.get_notification())
 
+    @property
+    def is_locking(self) -> bool:
+        """A lock command is awaiting the hub's report."""
+        return self.device.get_pending_locked() is True
+
+    @property
+    def is_unlocking(self) -> bool:
+        """An unlock command is awaiting the hub's report."""
+        return self.device.get_pending_locked() is False
+
     async def async_lock(self, **kwargs: Any):
-        await self.device.async_set_locked(True)
+        await self._async_set_locked(True)
 
     async def async_unlock(self, **kwargs: Any):
-        await self.device.async_set_locked(False)
+        await self._async_set_locked(False)
+
+    async def _async_set_locked(self, value: bool):
+        """
+        Returns once the hub has reported the new state. The library re-sends
+        once and raises if the hub never reports; that becomes a service-call
+        error here so automations and the UI see the failure instead of a lock
+        that silently stayed put.
+        """
+        try:
+            await self.device.async_set_locked(value)
+        except CommandFailedError as err:
+            raise HomeAssistantError(str(err)) from err
 
     @property
     def device_info(self):
