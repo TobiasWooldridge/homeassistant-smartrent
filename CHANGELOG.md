@@ -1,5 +1,8 @@
 # Changelog (thw fork)
 
+## 0.7.2 - 2026-09-05
+- Requires smartrent-py 0.7.2 (commands sent over the live websocket).
+
 ## 0.7.1 - 2026-09-05
 - Requires smartrent-py 0.7.1 (5/10/17 s re-send schedule, 25 s deadline).
 
