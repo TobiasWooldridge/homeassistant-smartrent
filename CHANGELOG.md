@@ -1,5 +1,8 @@
 # Changelog (thw fork)
 
+## 0.7.5 - 2026-09-06
+- Requires smartrent-py 0.7.5 (no transitional state on no-op commands).
+
 ## 0.7.4 - 2026-09-06
 - Requires smartrent-py 0.7.4 (fresh connection for every send).
 
