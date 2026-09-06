@@ -1,5 +1,8 @@
 # Changelog (thw fork)
 
+## 0.7.4 - 2026-09-06
+- Requires smartrent-py 0.7.4 (fresh connection for every send).
+
 ## 0.7.3 - 2026-09-05
 - Requires smartrent-py 0.7.3. Latency sensor gains a `verified` attribute:
   True when the lock's own operation notification confirmed the move, False
